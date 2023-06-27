@@ -21,6 +21,7 @@ class CatsController < ApplicationController
     cat.destroy
   end
 
+  
   # Handle strong parameters, so we are secure
   private
   def cat_params
