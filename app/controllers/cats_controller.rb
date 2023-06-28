@@ -5,15 +5,22 @@ class CatsController < ApplicationController
   end
 
   def create
-    # Create a new cat
-    cat = Cat.create(cat_params)
-    render json: cat
+    cat = Cat.new(cat_params)
+    if cat.save
+      render json: cat, status: :created
+    else
+      render json: cat.errors, status: :unprocessable_entity
+    end
   end
 
   def update
     cat = Cat.find(params[:id])
-    cat.update(cat_params)
-    render json:cat
+  
+    if cat.update(cat_params)
+      render json: cat
+    else
+      render json: cat.errors, status: :unprocessable_entity
+    end
   end
 
   def destroy
@@ -21,9 +28,8 @@ class CatsController < ApplicationController
     cat.destroy
   end
 
-  
-  # Handle strong parameters, so we are secure
   private
+
   def cat_params
     params.require(:cat).permit(:name, :age, :enjoys, :image)
   end
