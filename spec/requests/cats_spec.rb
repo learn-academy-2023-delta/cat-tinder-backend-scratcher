@@ -63,11 +63,12 @@ RSpec.describe "Cats", type: :request do
     expect(json['name']).to include "can't be blank"
   end
 
-  it "doesn't create a cat without enjoys and image" do
+  it "doesn't create a cat without enjoys." do
     cat_params = {
       cat: {
         name: 'Buster',
-        age: 4
+        age: 4,
+        image: 'https://images.unsplash.com/photo-1529778873920-4da4926a72c2?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1036&q=80'
       }
     }
     
@@ -82,7 +83,7 @@ RSpec.describe "Cats", type: :request do
     
     # Expect the validation error messages for enjoys and image attributes
     expect(json['enjoys']).to include "can't be blank"
-    expect(json['image']).to include "can't be blank"
+    
   end
 
   it "doesn't create a cat without age" do
@@ -107,12 +108,12 @@ RSpec.describe "Cats", type: :request do
     expect(json['age']).to include "can't be blank"
   end
   
-  it "doesn't create a cat without enjoys" do
+  it "doesn't create a cat without image" do
     cat_params = {
       cat: {
         name: 'Buster',
         age: 4,
-        image: 'https://images.unsplash.com/photo-1529778873920-4da4926a72c2?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1036&q=80'
+        enjoys: 'Meow Mix, and plenty of sunshine.',
       }
     }
     
@@ -126,11 +127,9 @@ RSpec.describe "Cats", type: :request do
     json = JSON.parse(response.body)
     
     # Expect the validation error message for enjoys attribute
-    expect(json['enjoys']).to include "can't be blank"
+    expect(json['image']).to include "can't be blank"
   end
     
-  
-
   describe "PATCH /cats/:id" do
     it "updates a cat" do
       cat = Cat.create(
