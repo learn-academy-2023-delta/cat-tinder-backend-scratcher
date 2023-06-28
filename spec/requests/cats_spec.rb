@@ -20,7 +20,7 @@ RSpec.describe "Cats", type: :request do
   end
 
   describe "POST /create" do
-    it "creates a cat" do
+    it "creates a cat with valid parameters" do
       # The params we are going to send with the request
       cat_params = {
         cat: {
@@ -34,7 +34,7 @@ RSpec.describe "Cats", type: :request do
       # Send the request to the server
       post '/cats', params: cat_params
   
-      # Assure that we get a success back
+      # Assure that we get a success response
       expect(response).to have_http_status(201)
   
       # Look up the cat we expect to be created in the db
@@ -42,8 +42,10 @@ RSpec.describe "Cats", type: :request do
   
       # Assure that the created cat has the correct attributes
       expect(cat.name).to eq 'Buster'
+      expect(cat.age).to eq 4
+      expect(cat.enjoys).to eq 'Meow Mix, and plenty of sunshine.'
+      expect(cat.image).to eq 'https://images.unsplash.com/photo-1529778873920-4da4926a72c2?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1036&q=80'
     end
-  end
 
   it "doesn't create a cat without a name" do
     cat_params = {
@@ -228,4 +230,5 @@ RSpec.describe "Cats", type: :request do
       expect { cat.reload }.to raise_error(ActiveRecord::RecordNotFound)
     end
   end
+end
 end
